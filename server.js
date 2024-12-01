@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const path = require("path");
 const connectDB = require("./config/db");
 const errorHandle = require('./middlewares/error');
 
@@ -12,6 +13,9 @@ dotenv.config();
 // body-parse 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// "public/upload" file static 
+app.use("/uploads", express.static(path.join(__dirname,"public/uploads")));
 
 // developer tools 
 if(process.env.NODE_ENV === "developer"){

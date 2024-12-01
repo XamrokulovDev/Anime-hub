@@ -7,6 +7,7 @@ const {
     updateAnime,
     deleteAnime,
 } = require("../controllers/anime.controller");
+const upload = require("../utils/fileUpload");
 
 // GET all anime
 /**
@@ -86,7 +87,7 @@ router.get("/all/:id", getAnimeById);
  *       400:
  *         description: Invalid input
  */
-router.post("/create", createNewAnime);
+router.post("/create", upload.single('video') ,createNewAnime);
 
 // UPDATE anime
 /**
@@ -138,7 +139,7 @@ router.post("/create", createNewAnime);
  *       400:
  *         description: Invalid input
  */
-router.put("/update/:id", updateAnime);
+router.put("/update/:id", upload.single('video') ,updateAnime);
 
 // DELETE anime
 /**

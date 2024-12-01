@@ -31,11 +31,15 @@ exports.getAnimeById = asyncHandle(async (req, res, next) => {
 
 // POST create new anime
 exports.createNewAnime = asyncHandle(async (req, res, next) => {
-    const { title, description, genre, rating, release_year, video, episodes } = req.body;
-    if (!title || !description || !genre || genre.length === 0 || !rating || !release_year || !video) {
+    const { title, description, genre, rating, release_year, episodes } = req.body;
+    if (!title || !description || !genre || !rating || !release_year) {
         return next(new ErrorResponse('Please fill all fields correctly!', 400));
     }
-    const newAnime = await Anime.create({ title, description, genre, rating, release_year, video, episodes });
+    if (!req.file) {
+        return next(new ErrorResponse('Video file is required!', 400));
+    }
+    const videoPath = `/uploads/${req.file.filename}`;
+    const newAnime = await Anime.create({ title, description, genre, rating, release_year, video: videoPath, episodes });
     res.status(201).json({
         success: true,
         data: newAnime,
@@ -52,7 +56,7 @@ exports.updateAnime = asyncHandle(async (req, res, next) => {
     }
     anime = await Anime.findByIdAndUpdate(
         id,
-        { title, description, genre, rating, release_year, video, episodes },
+        { title, description, genre, rating, release_year, video:videoPath, episodes },
     );
     res.status(200).json({
         success: true,

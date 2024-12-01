@@ -9,10 +9,10 @@ const animeSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    genre:[{
+    genre:{
         type:String,
         required:true,
-    }],
+    },
     rating:{
         type:String,
         required:true,
@@ -35,7 +35,6 @@ const animeSchema = new mongoose.Schema({
             }
         }
     ],
-
 },{
     timestamps:true,
 });
